@@ -1,7 +1,6 @@
 package com.metabook.entity;
 
 import lombok.*;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.util.List;
@@ -11,7 +10,6 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 @Builder
-@EntityListeners(AuditingEntityListener.class)
 @Table(name = "roles")
 public class Role {
     @Id

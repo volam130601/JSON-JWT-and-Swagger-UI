@@ -4,6 +4,7 @@ import com.metabook.config.jwt.TokenManager;
 import com.metabook.dto.payload.LoginRequest;
 import com.metabook.dto.payload.LoginResponse;
 import com.metabook.service.user.UserService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @CrossOrigin
 @RequestMapping("/api")
+@Tag(name = "login")
 public class LoginController {
 
     @Autowired
@@ -42,8 +44,4 @@ public class LoginController {
         return ResponseEntity.ok(new LoginResponse(jwtToken));
     }
 
-    @GetMapping("/hello")
-    public String hello() {
-        return "Hello JSON JWT";
-    }
 }
