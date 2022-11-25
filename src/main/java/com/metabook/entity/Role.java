@@ -1,5 +1,6 @@
 package com.metabook.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -20,5 +21,6 @@ public class Role {
     @OneToMany(mappedBy = "role")
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
+    @JsonIgnore
     private List<User> userList;
 }

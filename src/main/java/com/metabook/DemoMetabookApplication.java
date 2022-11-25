@@ -39,4 +39,6 @@ public class DemoMetabookApplication implements CommandLineRunner {
             roleRepository.save(Role.builder().code("ROLE_USER").build());
         }
     }
+
+
 }

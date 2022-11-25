@@ -1,6 +1,7 @@
 package com.metabook.entity;
 
 import lombok.*;
+import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -26,6 +27,10 @@ public class User implements Serializable {
     private String fullName;
     private Date birthDay;
     private int gender;
+
+    @CreatedDate
+    private Date createDate;
+
     @ManyToOne
     @JoinColumn(name = "role_id")
     @EqualsAndHashCode.Exclude

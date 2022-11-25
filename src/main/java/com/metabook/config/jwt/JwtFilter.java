@@ -1,6 +1,6 @@
 package com.metabook.config.jwt;
 
-import com.metabook.service.user.UserService;
+import com.metabook.service.user.UserDetailsServiceImpl;
 import io.jsonwebtoken.ExpiredJwtException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -19,7 +19,7 @@ import java.io.IOException;
 @Component
 public class JwtFilter extends OncePerRequestFilter {
     @Autowired
-    private UserService userService;
+    private UserDetailsServiceImpl userDetailsServiceImpl;
     @Autowired
     private TokenManager tokenManager;
 
@@ -44,7 +44,7 @@ public class JwtFilter extends OncePerRequestFilter {
             System.out.println("Bearer String not found in token");
         }
         if (null != username && SecurityContextHolder.getContext().getAuthentication() == null) {
-            UserDetails userDetails = userService.loadUserByUsername(username);
+            UserDetails userDetails = userDetailsServiceImpl.loadUserByUsername(username);
             if (tokenManager.validateJwtToken(token, userDetails)) {
                 UsernamePasswordAuthenticationToken
                         authenticationToken = new UsernamePasswordAuthenticationToken(

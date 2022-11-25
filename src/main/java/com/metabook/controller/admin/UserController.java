@@ -1,9 +1,9 @@
-package com.metabook.controller;
+package com.metabook.controller.admin;
 
+import com.metabook.dto.ResponseObject;
 import com.metabook.entity.User;
 import com.metabook.repository.UserRepository;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -11,13 +11,11 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
-import java.util.List;
-
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/admin/api")
 @RequiredArgsConstructor
 @Tag(name = "user")
 public class UserController {
@@ -31,28 +29,15 @@ public class UserController {
             @ApiResponse(responseCode = "403", description = "Truy cập bị cấm"),
             @ApiResponse(responseCode = "404", description = "Không tìm thấy")
     })
+
     @GetMapping("/users")
-    public List<User> getAllUsers() {
-        return userRepository.findAll();
+    public ResponseEntity<ResponseObject> getAllUsers() {
+        return ResponseEntity.ok(new ResponseObject(userRepository.findAll(), "Find All Users", "SUCCESS"));
     }
 
     @GetMapping("/users/{id}")
     public User getUser(@PathVariable("id") Long id) {
         return userRepository.findById(id).orElse(new User());
-    }
-
-    @PostMapping("/users")
-    public User createUser(
-            @Valid
-            @Parameter(description = "User model to create.", required = true, schema = @Schema(implementation = User.class))
-            @RequestBody User user) {
-        return userRepository.save(user);
-    }
-
-    @PutMapping("/users/{id}")
-    public User updateUser(@PathVariable("id") Long id, @Valid @RequestBody User user) {
-        user.setId(id);
-        return userRepository.save(user);
     }
 
     @DeleteMapping("/users/{id}")
