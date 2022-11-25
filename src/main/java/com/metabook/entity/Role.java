@@ -1,7 +1,7 @@
 package com.metabook.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.util.List;
@@ -11,7 +11,6 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 @Builder
-@EntityListeners(AuditingEntityListener.class)
 @Table(name = "roles")
 public class Role {
     @Id
@@ -22,5 +21,6 @@ public class Role {
     @OneToMany(mappedBy = "role")
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
+    @JsonIgnore
     private List<User> userList;
 }

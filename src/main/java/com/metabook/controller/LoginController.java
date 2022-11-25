@@ -1,9 +1,13 @@
 package com.metabook.controller;
 
 import com.metabook.config.jwt.TokenManager;
+import com.metabook.dto.ResponseObject;
 import com.metabook.dto.payload.LoginRequest;
 import com.metabook.dto.payload.LoginResponse;
+import com.metabook.entity.User;
+import com.metabook.service.user.UserDetailsServiceImpl;
 import com.metabook.service.user.UserService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -13,10 +17,16 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @RestController
 @CrossOrigin
 @RequestMapping("/api")
+@Tag(name = "login")
 public class LoginController {
+
+    @Autowired
+    private UserDetailsServiceImpl userDetailsServiceImpl;
 
     @Autowired
     private UserService userService;
@@ -28,6 +38,7 @@ public class LoginController {
     @PostMapping("/login")
     public ResponseEntity<LoginResponse> createToken(@RequestBody LoginRequest request) throws Exception {
         try {
+            System.out.println(request);
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(request.getUsername(),
                             request.getPassword())
@@ -37,13 +48,23 @@ public class LoginController {
         } catch (BadCredentialsException e) {
             throw new Exception("INVALID_CREDENTIALS", e);
         }
-        final UserDetails userDetails = userService.loadUserByUsername(request.getUsername());
+        final UserDetails userDetails = userDetailsServiceImpl.loadUserByUsername(request.getUsername());
         final String jwtToken = tokenManager.generateJwtToken(userDetails);
         return ResponseEntity.ok(new LoginResponse(jwtToken));
     }
 
-    @GetMapping("/hello")
-    public String hello() {
-        return "Hello JSON JWT";
+    @PostMapping("/register")
+    public ResponseEntity<ResponseObject> register(@Valid @RequestBody User user) {
+        System.out.println(user);
+        return ResponseEntity.ok(
+                new ResponseObject(userService.register(user), "Register success", "SUCCESS", 1)
+        );
     }
+
+    @GetMapping("/remember-me")
+    public ResponseEntity<ResponseObject> rememberMe() {
+        System.out.println("Check remember-me");
+        return ResponseEntity.ok(new ResponseObject());
+    }
+
 }
