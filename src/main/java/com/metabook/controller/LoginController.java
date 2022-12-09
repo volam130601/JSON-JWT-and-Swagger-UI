@@ -9,6 +9,7 @@ import com.metabook.service.user.UserDetailsServiceImpl;
 import com.metabook.service.user.UserService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -20,7 +21,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 @RestController
-@CrossOrigin
 @RequestMapping("/api")
 @Tag(name = "login")
 public class LoginController {
@@ -35,7 +35,7 @@ public class LoginController {
     @Autowired
     private TokenManager tokenManager;
 
-    @PostMapping("/login")
+    @PostMapping(value = "/login" , produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<LoginResponse> createToken(@RequestBody LoginRequest request) throws Exception {
         try {
             System.out.println(request);

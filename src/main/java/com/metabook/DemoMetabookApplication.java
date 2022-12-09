@@ -26,18 +26,19 @@ public class DemoMetabookApplication implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        if (userRepository.findAll() == null) {
-            User user = new User();
-            user.setEmail("admin@gmail.com");
-            user.setPassword(passwordEncoder.encode("loda"));
-            user.setRole(roleRepository.findById(1L).get());
-            userRepository.save(user);
-            System.out.println(user);
-        }
-        if (roleRepository.findAll() == null) {
+        if (roleRepository.findByCode("ROLE_ADMIN")== null) {
             roleRepository.save(Role.builder().code("ROLE_ADMIN").build());
             roleRepository.save(Role.builder().code("ROLE_USER").build());
         }
+        if (userRepository.findByEmail("admin@gmail.com") == null) {
+            User user = User.builder()
+                    .email("admin@gmail.com")
+                    .password(passwordEncoder.encode("123"))
+                    .role(roleRepository.findByCode("ROLE_ADMIN")).build();
+            userRepository.save(user);
+            System.out.println(user);
+        }
+
     }
 
 

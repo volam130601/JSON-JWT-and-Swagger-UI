@@ -2,9 +2,9 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
-    show-sql: false
+    show-sql: true
   datasource:
     username: root
     password: 870124zxc
-    url: jdbc:mysql://${MYSQL_HOST:localhost}:3306/db_metabook
+    url: jdbc:mysql://${MYSQL_HOST:localhost}:3306/db_jwt
     driver-class-name: com.mysql.cj.jdbc.Driver
